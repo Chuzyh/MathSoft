@@ -1,0 +1,63 @@
+\documentclass{ctexart}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts,amssymb}
+
+\title{作业一: 实对称矩必可在实数域上相似对角化的叙述与证明}
+
+
+\author{褚朱钇恒 \\ 信息与计算科学 3200104144}
+
+\begin{document}
+
+\maketitle
+
+
+这是一个来自线性代数领域的问题.
+\section{问题描述}
+问题叙述如下: 任何一个$n$阶的实对称阵均可在$\mathbb{R}$上相似对角化，且存在$n$阶的正交矩阵$U$，使$U^TAU$为对角阵。
+
+\section{证明}
+
+我们只要证明存在$n$阶的正交矩阵$U$，使$U^TAU$为对角阵即可。为此，我们对矩阵的阶做归纳，若$A$为一阶方阵，则它已经相似对角化，令$U=(1)_{1\times 1}$即得证。
+
+设已证明任何一个$n-1$是对称矩阵都存在想要的正交矩阵$U_1$，使得$U_1^TAU_1$为对角阵，则对于任意一个$n$阶实对称阵$A$，由于$n$阶实对称矩阵有$n$个实特征值。设$\lambda_1$为其中一个特征值，$\xi_1$为$A$的属于$\lambda_1$的一个实特征向量且$|\xi_1|=1$. 用Schmidt正交化方法将$\xi_1$扩充成$\mathbb{R}^n$中的一个标准正交基$\xi_1,\xi_2,\cdots,\xi_n$，则$A\xi_1,A\xi_2,\cdots,A\xi_n$均可以经$\xi_1,\xi_2,\cdots,\xi_n$线性表示，不难验证
+\begin{equation}
+    \begin{split}
+    A\begin{pmatrix} \xi_1 & \xi_2 & \cdots & \xi_n \end{pmatrix}
+    &=\begin{pmatrix} A\xi_1 & A\xi_2 & \cdots & A\xi_n \end{pmatrix} \\
+    &=\begin{pmatrix} \xi_1 & \xi_2 & \cdots & \xi_n \end{pmatrix}\begin{pmatrix} \lambda_1 & \alpha \\ O &A_1 \end{pmatrix}
+    \end{split}
+    \label{eq::eq1}
+\end{equation}
+
+这里$\alpha$为$n-1$维实行向量，$A_1$为$n-1$阶实方阵。令
+$$U_0=\begin{pmatrix} \xi_1 & \xi_2 & \cdots & \xi_n \end{pmatrix}$$
+
+则依$\begin{matrix} \xi_1 & \xi_2 & \cdots & \xi_n \end{matrix}$为$\mathbb{R}^n$的一个标准正交基知$U_0$为正交矩阵。故(\ref{eq::eq1})等价于
+\begin{equation}
+    \begin{split}
+    U^T_0AU_0
+    &=\begin{pmatrix} \lambda_1 & \alpha \\ O &A_1 \end{pmatrix}
+    \end{split}
+    \label{eq::eq2}
+\end{equation}
+
+由于(\ref{eq::eq2})等式左端为实对称的，故右端也是实对称的，从而$\alpha=\theta$,$A_1$为$n-1$阶的实对称阵。依归纳假设知，存在$n-1$阶的正交矩阵$U_1$与$n-1$阶对角阵$D_1$使$U_1^TA_1U_1=D_1$,令
+$$
+U=U_0\begin{pmatrix} 1 &   \\   &U_1 \end{pmatrix}
+$$
+
+则$U$为正交矩阵，且
+\begin{equation}
+    \begin{split}
+    U^TAU
+    &=\begin{pmatrix} 1 &   \\   &U_1^T \end{pmatrix}\begin{pmatrix} \lambda_1 &   \\   &A_1 \end{pmatrix}\begin{pmatrix} 1 &   \\   &U_1 \end{pmatrix}\\
+    &=\begin{pmatrix} \lambda_1 &   \\   &D_1 \end{pmatrix}
+    \end{split}
+\end{equation}
+
+这说明所要证明的结论对于$n$阶实对称阵$A$也成立。依数学归纳法，定理得证。
+
+\end{document}
