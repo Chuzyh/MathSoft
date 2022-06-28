@@ -1,0 +1,12 @@
+#!/bin/bash
+g++ std.cpp -o std
+g++ NeedCheck.cpp -o wa
+for input_file in $(ls *.in); do
+	./std <$input_file >out1
+	./wa <$input_file >out2
+	if diff out1 out2 -b -B; then
+		echo "Accept" ${input_file%.*}
+	else 
+		echo "WrongAnswer" ${input_file%.*}
+	fi
+done
