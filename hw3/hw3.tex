@@ -1,0 +1,60 @@
+\documentclass{article}
+\usepackage{ctex, hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{amsfonts,amssymb}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}  
+\usepackage{algorithm}  
+\usepackage{algpseudocode}
+\usepackage{float}  
+\usepackage{listings} 
+\title{作业二: 配置Linux工作环境}
+
+
+\author{褚朱钇恒 \\ 信息与计算科学 3200104144}
+
+\begin{document}
+
+\maketitle
+
+\section{选择Linux 发行版}
+    Ubuntu 20.04.4 LTS
+\section{安装的软件}
+    \begin{itemize}
+        \item python
+        \item python3
+        \item grep
+        \item texlive
+        \item synaptic
+        \item make
+        \item cmake
+        \item Vscode
+        \item libboost
+        \item trilinos
+        \item dx
+        \item git
+        \item ssh
+        \item clash
+    \end{itemize}
+\section{简单的配置}
+
+
+\begin{verbatim}
+#!/bin/bash
+g++ std.cpp -o std
+g++ NeedCheck.cpp -o wa
+for input_file in $(ls *.in); do
+	./std <$input_file >out1
+	./wa <$input_file >out2
+	if diff out1 out2 -b -B; then
+		echo "Accept" ${input_file%.*}
+	else 
+		echo "WrongAnswer" ${input_file%.*}
+	fi
+done
+\end{verbatim}
+
+    接下来运行脚本就可以看到错误代码通过了哪些测试点，在哪些测试点输出了错误的答案。
+
+\end{document}
