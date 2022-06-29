@@ -9,6 +9,9 @@
 \usepackage{algpseudocode}
 \usepackage{float}  
 \usepackage{listings} 
+\usepackage{cite}
+\bibliographystyle{plain}
+
 \title{作业二: 配置Linux工作环境}
 
 
@@ -36,25 +39,155 @@
         \item git
         \item ssh
         \item clash
+        \item chrome
     \end{itemize}
 \section{简单的配置}
+    \subsection{系统配置}
+        \subsubsection{网络设置}
+        为了方便地使用clash进行网络代理，需要进行以下设置\cite{GlaDOS}
+            \begin{verbatim}
+export http_proxy=http://127.0.0.1:7890/
+export https_proxy=http://127.0.0.1:7890/
+            \end{verbatim}
+        \subsection{vim配置}
+            \begin{verbatim}
+noremap j h
+noremap k j
+noremap l k
+noremap ; l
+inoremap { {<cr>}<up>
+set ts=4
+noremap <F9> :!g++ -Wall % -o %:r && time ./%:r<cr>
+
+noremap <C-B> :!g++ -Wall % -o %:r && time ./%:r<cr>
+set ai!
+noremap <C-A> ggVG"+Y
+set nu
+noremap <C-W> :wq<cr>
+set nowrap
+            \end{verbatim}
+
+        \subsection{VsCode配置}
+        安装了以下插件
+        \begin{itemize}
+            \item C/C++
+            \item cmake
+            \item code runner
+            \item LaTeX language support
+            \item LaTeX Workshop
+            \item Markdown All in One
+        \end{itemize}
+        
+        使用的配置文件
+        \begin{verbatim}
+{
+    "latex-workshop.latex.tools": [
+        
+        {
+          "name": "xelatex",
+          "command": "xelatex",
+          "args": [
+          "-synctex=1",
+          "-interaction=nonstopmode",
+          "-file-line-error",
+          "%DOCFILE%"
+            ]
+        },          
+        {
+          "name": "pdflatex",
+          "command": "pdflatex",
+          "args": [
+          "-synctex=1",
+          "-interaction=nonstopmode",
+          "-file-line-error",
+          "%DOCFILE%"
+          ]
+        },
+        {
+          "name": "bibtex",
+          "command": "bibtex",
+          "args": [
+          "%DOCFILE%"
+          ]
+        }
+      ],
+      
+      "latex-workshop.latex.recipes": [
+      
+          {
+              "name": "XeLaTeX",
+              "tools": [
+                  "xelatex"
+              ]
+          },
+          {
+              "name": "PDFLaTeX",
+              "tools": [
+                  "pdflatex"
+              ]
+          },
+          {
+              "name": "BibTeX",
+              "tools": [
+                  "bibtex"
+              ]
+          },
+          {
+              "name": "LaTeXmk",
+              "tools": [
+                  "latexmk"
+              ]
+          },
+          {
+              "name": "xelatex -> bibtex -> xelatex*2",
+              "tools": [
+                  "xelatex",
+                  "bibtex",
+                  "xelatex",
+                  "xelatex"
+              ]
+          },
+          {
+              "name": "pdflatex -> bibtex -> pdflatex*2",
+              "tools": [
+                  "pdflatex",
+                  "bibtex",
+                  "pdflatex",
+                  "pdflatex"
+              ]
+          }
+      ],
+
+}
+        \end{verbatim}
 
 
-\begin{verbatim}
-#!/bin/bash
-g++ std.cpp -o std
-g++ NeedCheck.cpp -o wa
-for input_file in $(ls *.in); do
-	./std <$input_file >out1
-	./wa <$input_file >out2
-	if diff out1 out2 -b -B; then
-		echo "Accept" ${input_file%.*}
-	else 
-		echo "WrongAnswer" ${input_file%.*}
-	fi
-done
-\end{verbatim}
 
-    接下来运行脚本就可以看到错误代码通过了哪些测试点，在哪些测试点输出了错误的答案。
+\section{未来的工作}
+    \subsection{未来半年内使用Linux环境的工作}
+    \begin{itemize}
+        \item 学习数值分析等课程
+        \item 完成SRTP项目的代码工作
+        \item 制作算法设计竞赛题目
+        \item （可能实习也会用到？）
+    \end{itemize}
+    \subsection{分析目前的工作环境是否符合未来需求}
+        基本符合需求，但未来部分工作可能会产生大量需要保证存储安全性的数据，解决问题的方式见下一节。
+    
+\section{数据安全性}
+    \subsection{代码}
+        一份备份使用git工具在github上进行保存，另一备份与文档等其他数据用相同的方法一起保存。
+    \subsection{文档或其他重要数据}
+        文档等数据数量较小，可以考虑使用网盘等工具进行存储，但由于在制作算法题的工作中需要制造大量测试数据并进行长期保存，数据量较大，故我选择本地Raid阵列存储。步骤如下：
+        \begin{enumerate}
+            \item 组装一台台式机并安装至少一块固态硬盘作为系统盘，两块机械硬盘组成Raid-1阵列
+            \item 购买一台无线路由器在寝室中构建局域网，将Raid-1阵列构建的逻辑盘使用smb协议在局域网上开放，方便笔记本访问
+            \item 在路由器上设置端口转发，方便在校网中访问
+            \item 在台式机上运行一个bt作种程序，让我可以在nexushd.org站点上查看路由器的ip地址
+            \item （对于校外访问的情况，使用学校提供的rvpn服务即可访问校内的台式机的文件）
+        \end{enumerate}
 
+        由于台式机上还挂载了其他未组raid阵列的硬盘用于存放电影音乐等多媒体文件，为了方便使用多媒体服务，台式机安装了Windows系统，由于暂时懒得折腾，故目前仍使用重要数据及时备份配合手动定时全局备份的方式备份Ubuntu中的数据。（或许未来会折腾一下如何自动备份，但很怀疑不在自己的局域网下备份的话，校网速度够不够快）
+
+     \bibliography{quote}
 \end{document}
