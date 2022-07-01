@@ -22,7 +22,7 @@
 \maketitle
 
 \begin{abstract}
-     Mandelbrot 集是复数的集合 $c$，使$f_{c}(z)=z^{2}+c$迭代时不会发散到无穷大.我们可以用迭代法判断每个像素对应的复数是否属于$c$，然后进行着色，画出$Mandelbrot set$的图像。
+     Mandelbrot 集是复数的集合 $c$，使$f_{c}(z)=z^{2}+c$迭代时不会发散到无穷大.我们可以用迭代法判断每个像素对应的复数是否属于$c$，然后进行着色，画出$Mandelbrot\ set$的图像。
 \end{abstract}
 \section{引言}
 Mandelbrot 集的图像有了一个精细且无限复杂的边界，随着放大倍数的增加，它会显示出越来越精细的递归细节；在数学上，它的边界是一条分形曲线。我们可以用一张bmp图片对应复平面上的一片区域，这样就让一个像素点对应了一个复数，我们可以根据该复数迭代多少次后模大于2，来选择该像素点的颜色，于是我们便可以画出$Mandelbrot$集的图像。
@@ -80,14 +80,14 @@ Mandelbrot 集起源于复动力学，这是 20 世纪初法国数学家 Pierre 
 
 首先我们来看一下整体图像
 
-使用代码\verb|./test all.bmp 0 0 1|得到图像
+使用命令\verb|./test all.bmp 0 0 1|得到图像
 \begin{figure}[H]
      \centering
      \includegraphics[scale=0.28]{./image/all.bmp}
      \caption{整体图像}
 \end{figure}
 然后我们以$(-1.4,0)$为中心放大，用更小的精度渲染更小范围的图像，容易发现其有美丽的分形结构。
-使用代码\verb|./test part.bmp -1.4 0 0.05|得到图像
+使用命令\verb|./test part.bmp -1.4 0 0.05|得到图像
 \begin{figure}[H]
      \centering
      \includegraphics[scale=0.28]{./image/part.bmp}
@@ -95,7 +95,7 @@ Mandelbrot 集起源于复动力学，这是 20 世纪初法国数学家 Pierre 
 \end{figure}
 
 似乎灰度变化的分界线不太明显，我们不妨改成用颜色分界，这样更容易看出图像的分形特征。
-使用代码\verb|./test part.bmp -1.4 0 0.05 colorful|得到图像
+使用命令\verb|./test part.bmp -1.4 0 0.05 colorful|得到图像
 \begin{figure}[H]
      \centering
      \includegraphics[scale=0.26]{./image/col.bmp}
@@ -106,6 +106,6 @@ Mandelbrot 集起源于复动力学，这是 20 世纪初法国数学家 Pierre 
 
      容易发现在该图像的一个部分内, 能找到大小更小而和整体形状相似的图形结构. 这说明Mandelbrot Set是一个分形结构.
 \section{附注}
-
+     本项目用到的\verb|.cpp|文件都放在\verb|src|文件夹中，用到的\verb|.h|文件都放在\verb|include|文件夹中；您可以使用\verb|make|命令得到名为\verb|test|的可执行文件，也可以使用\verb|make report|命令得到该pdf文档。
 \bibliography{quote}
 \end{document}
