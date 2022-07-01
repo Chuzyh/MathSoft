@@ -11,8 +11,8 @@
 \usepackage{listings} 
 \usepackage{cite}
 \bibliographystyle{plain}
-
-\title{作业四: Manderbrot Set 的生成和探索}
+\newtheorem{theorem}{定理}
+\title{作业四: Mandelbrot Set 的生成和探索}
 
 
 \author{褚朱钇恒 \\ 信息与计算科学 3200104144}
@@ -21,5 +21,91 @@
 
 \maketitle
 
-     \bibliography{quote}
+\begin{abstract}
+     Mandelbrot 集是复数的集合 $c$，使$f_{c}(z)=z^{2}+c$迭代时不会发散到无穷大.我们可以用迭代法判断每个像素对应的复数是否属于$c$，然后进行着色，画出$Mandelbrot set$的图像。
+\end{abstract}
+\section{引言}
+Mandelbrot 集的图像有了一个精细且无限复杂的边界，随着放大倍数的增加，它会显示出越来越精细的递归细节；在数学上，它的边界是一条分形曲线。我们可以用一张bmp图片对应复平面上的一片区域，这样就让一个像素点对应了一个复数，我们可以根据该复数迭代多少次后模大于2，来选择该像素点的颜色，于是我们便可以画出$Mandelbrot$集的图像。
+\section{问题的背景介绍}
+Mandelbrot 集起源于复动力学，这是 20 世纪初法国数学家 Pierre Fatou和Gaston Julia首次研究的领域。1978 年，罗伯特·W·布鲁克斯和彼得·马特尔斯基首次定义并绘制了这种分形，作为克莱因群研究的一部分。1980 年 3 月 1 日，Benoit Mandelbrot在纽约约克镇高地的IBM托马斯 J. 沃森研究中心首次看到了该集合的可视化。
+
+1985 年 8 月的《科学美国人》的封面文章向广大读者介绍了计算 Mandelbrot 集的算法。封面由不来梅大学的Peitgen 、Richter 和Saupe创作。Mandelbrot 集在 1980 年代中期作为计算机图形演示变得突出，当时个人计算机变得足够强大，可以以高分辨率绘制和显示该集。\cite{wikipedia_Mandelbrot}
+
+\section{数学理论}
+\begin{theorem}{判断是否不收敛}
+     从0开始迭代的轨道趋于无穷当且仅当在某个点它的模数$>2$.
+\end{theorem}
+
+\section{算法}
+\begin{algorithm}  [H]
+     \caption{判断$c$对应的$f_c$是否有界}  
+     \begin{algorithmic}[1] %每行显示行号  
+         \Require   $c,N$ 需要判断的复数和迭代次数
+         \Ensure   $iterator\_times,is\_bound$ 迭代到模数大于2的次数，是否在给定的迭代次数内是否存在某个点模大于2.
+         
+         \State $z \gets 0$
+         \State $is\_bound \gets 1$
+          
+          \For{$i=1;i\le N;i++$}
+               \State $z \gets z*z+c$
+               \If{$|z|>2$}
+                 \State $iterator\_times \gets i$
+                 \State $is\_bound \gets 0$
+                 \State break
+               \EndIf
+         \EndFor
+
+     \end{algorithmic}  
+ \end{algorithm}  
+ \begin{algorithm}  [H]
+     \caption{判断每个像素点的颜色信息}  
+     \begin{algorithmic}[1] %每行显示行号  
+         \Require   $ox,oy,dim$图片中心对应的复数$ox+oy\textbf{i}$，图片横向所表示的范围$[-dim,dim]$ 
+         \State $N\gets \frac{255}{3}$
+          \For {每个像素点}
+               \State $c \gets $该像素点对应的复数
+               
+               \State use Algorithm 1
+               \If{$is\_bound$}
+                    \State 该节点的RGB值$\gets 0$
+               \Else
+                    \State 该节点的RGB值$\gets 255-iterator\_times*3$
+               \EndIf
+         \EndFor
+
+     \end{algorithmic}  
+ \end{algorithm}  
+\section{数值算例}
+（请先使用\verb|make|命令得到可执行文件）
+
+首先我们来看一下整体图像
+
+使用代码\verb|./test all.bmp 0 0 1|得到图像
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.28]{./image/all.bmp}
+     \caption{整体图像}
+\end{figure}
+然后我们以$(-1.4,0)$为中心放大，用更小的精度渲染更小范围的图像，容易发现其有美丽的分形结构。
+使用代码\verb|./test part.bmp -1.4 0 0.05|得到图像
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.28]{./image/part.bmp}
+     \caption{局部图像}
+\end{figure}
+
+似乎灰度变化的分界线不太明显，我们不妨改成用颜色分界，这样更容易看出图像的分形特征。
+使用代码\verb|./test part.bmp -1.4 0 0.05 colorful|得到图像
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.26]{./image/col.bmp}
+     \caption{彩色图像}
+\end{figure}
+\section{结论}
+     我们用C++程序画出了Mandelbrot Set的简单示意图，用观察图像的方式感性理解了一下这个集合的特点。
+
+     容易发现在该图像的一个部分内, 能找到大小更小而和整体形状相似的图形结构. 这说明Mandelbrot Set是一个分形结构.
+\section{附注}
+
+\bibliography{quote}
 \end{document}
