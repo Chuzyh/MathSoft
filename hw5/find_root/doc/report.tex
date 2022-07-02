@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage{ctex, hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{amsfonts,amssymb}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}  
+\usepackage{algorithm}  
+\usepackage{algpseudocode}
+\usepackage{float}  
+\usepackage{listings} 
+\usepackage{cite}
+\bibliographystyle{plain}
+\newtheorem{theorem}{定理}
+\title{作业五: 安装最新版本的 gsl}
+
+
+\author{褚朱钇恒 \\ 信息与计算科学 3200104144}
+
+\begin{document}
+
+\maketitle
+\section{对roots.c的分析}
+     对于函数$F(x)=x^2-5$使用brent method迭代法求出它的一个在$[0,5]$中的一个解。
+
+     输出结果
+\begin{verbatim}
+using brent method
+ iter [    lower,     upper]      root        err  err(est)
+    1 [1.0000000, 5.0000000] 1.0000000 -1.2360680 4.0000000
+    2 [1.0000000, 3.0000000] 3.0000000 +0.7639320 2.0000000
+    3 [2.0000000, 3.0000000] 2.0000000 -0.2360680 1.0000000
+    4 [2.2000000, 3.0000000] 2.2000000 -0.0360680 0.8000000
+    5 [2.2000000, 2.2366300] 2.2366300 +0.0005621 0.0366300
+Converged:
+    6 [2.2360634, 2.2366300] 2.2360634 -0.0000046 0.0005666
+\end{verbatim}
+     不难发现$[lower,upper]$表示迭代得出的解的范围，$root$为当前迭代出的解，$err$为当前解和真实解的差，$err(est)$为当前解的范围的大小。
+\end{document}
