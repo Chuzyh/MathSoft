@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage{ctex, hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{amsfonts,amssymb}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}  
+\usepackage{algorithm}  
+\usepackage{algpseudocode}
+\usepackage{float}  
+\usepackage{listings} 
+\usepackage{cite}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,chains}
+\tikzstyle{decision} = [diamond, draw, fill=orange!80, text width=5.0em, text centered, node distance=3.1cm, ] 
+\tikzstyle{document} = [rectangle, draw, fill=blue!30, text width=4.7em, text centered, node distance=2.5cm, ] 
+\tikzstyle{block1} = [rectangle, draw, fill=green!50, %here, we have chosen another block for the different color
+text width=4.5em, text centered, rounded corners, node distance= 3cm, minimum height=3em] % you can create as many different shapes to make your diagram more creative and attractive, depending on the requirements
+
+\tikzstyle{block} = [rectangle, draw, fill=yellow!50, text width=4.5em, text centered, rounded corners, node distance=2.25cm, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse, text width= 2.9em, fill=red!50, node distance=2cm, minimum height=3em]
+
+\tikzstyle{ioi} = [trapezium, draw, trapezium right angle=120, rounded corners, fill=blue!60, node distance=2.8cm, minimum height=2.7em]
+ \tikzstyle{io} = [trapezium, draw, trapezium right angle=110, rounded corners, fill=red!20, node distance=1.9cm, minimum height=2.9em]   % the draw command here is used to draw the boundary of mentioned shape.
+
+\bibliographystyle{plain}
+\newtheorem{theorem}{定理}
+\title{作业六: 求解一元二次方程}
+
+
+\author{褚朱钇恒 \\ 信息与计算科学 3200104144}
+
+\begin{document}
+
+\maketitle
+\section{问题描述}
+形如
+$$
+ax^2+bx+c=0，a,b,c \in \mathbb{R}
+$$
+的方程称为一元二次方程，求$x_0 \in \mathbb{R}$满足该方程等价于求$f(x)=ax^2+bx+c$的零点。
+\section{问题分析}
+     首先将二次项系数化为1，得到$$x^2+\frac{b}{a}x+\frac{c}{a}=0$$
+     
+     然后使用配方法将原方程变形得到$$x^2+2\frac{b}{2a}x+(\frac{b}{2a})^2=-(\frac{b}{2a})^2-\frac{c}{a}$$
+
+     $$(x+\frac{b}{2a})^2=-\frac{b^2}{4a^2}-\frac{c}{a}$$
+
+     最后得到$$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$
+
+     由于$b^2-4ac$的正负性影响了方程实根的数量，故称其为判别式$\Delta$，通过以下示意图不难看出$\Delta$与$f(x)$零点数量即方程实根数量之间的关系。
+
+     \begin{figure}[H]
+          \begin{center}
+               \input{eg1.tex}
+          \end{center}
+          \caption{$\Delta$的正负性和零点数量之间的关系}
+     \end{figure}
+\section{求解方法}
+     通过上述分析，我们不难得出求解求解一元二次方程的算法：即先根据判别式$\Delta$的不同判断实根的数量，再代入求根公式。下面的流程图就是该算法的具体表述。
+\begin{figure}
+\centering
+\begin{tikzpicture}[node distance = 1.8cm, auto] % the command node distance is important as it determines the space or the length of the arrow between different blocks.
+     % the command given below are the place of nodes
+     \node [cloud] (init) {输入$a,b,c$};
+     \node [decision, below of = init](C){判别式$\Delta$的值};
+     \node [block, below of = C,yshift=-1cm](D){$\Delta>0$，方程有两个不相等的实根};
+     \node [document, below of = D](F){求解方程的根$x=\frac{-b\pm\sqrt{\Delta}}{2a}$};
+     \node [cloud, below of = F](G){输出结果};
+     \node [block, right of = D](H){$\Delta<0$，方程无实根};
+     \node [block, left of = D](J){$\Delta=0$，方程有两个相等的实根};
+     \node (tmp) [coordinate, above of =J,yshift=-0.3cm]{};
+     \node (tmp2) [coordinate, above of =H,yshift=-0.3cm]{};
+                     
+     \path [line] (init) -- (C); 
+     \path [line] (C) -- (D); 
+     \path [line] (D) -- (F); 
+     \path [line] (F) -- (G); 
+     \path [line] (H) |- (G.east); % |- is used for making the rectangular arrow
+     \path [line] (C.south) --(tmp) -- (J.north); % to position the arrow, you can use north, south, east, and west directions
+     \path [line] (C.south) --(tmp2) -- (H.north); % to position the arrow, you can use north, south, east, and west directions
+  
+     \path [line] (J) |- (F.west); 
+     
+ \end{tikzpicture}
+ \caption{算法流程图}
+ \label{algo}
+\end{figure}
+\bibliography{quote}
+\end{document}
