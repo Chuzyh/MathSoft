@@ -1,0 +1,123 @@
+\documentclass{article}
+\usepackage{ctex, hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{amsfonts,amssymb}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}  
+\usepackage{algorithm}  
+\usepackage{algpseudocode}
+\usepackage{float}  
+\usepackage{listings} 
+\usepackage{cite}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,chains}
+\tikzstyle{decision} = [diamond, draw, fill=orange!80, text width=5.0em, text centered, node distance=3.1cm, ] 
+\tikzstyle{document} = [rectangle, draw, fill=blue!30, text width=4.7em, text centered, node distance=2.5cm, ] 
+\tikzstyle{block1} = [rectangle, draw, fill=green!50, %here, we have chosen another block for the different color
+text width=4.5em, text centered, rounded corners, node distance= 3cm, minimum height=3em] % you can create as many different shapes to make your diagram more creative and attractive, depending on the requirements
+
+\tikzstyle{block} = [rectangle, draw, fill=yellow!50, text width=4.5em, text centered, rounded corners, node distance=2.25cm, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse, text width= 2.9em, fill=red!50, node distance=2cm, minimum height=3em]
+
+\tikzstyle{ioi} = [trapezium, draw, trapezium right angle=120, rounded corners, fill=blue!60, node distance=2.8cm, minimum height=2.7em]
+ \tikzstyle{io} = [trapezium, draw, trapezium right angle=110, rounded corners, fill=red!20, node distance=1.9cm, minimum height=2.9em]   % the draw command here is used to draw the boundary of mentioned shape.
+ \tikzstyle{arrow} = [thick,->,>=stealth]
+
+\bibliographystyle{plain}
+\newtheorem{theorem}{定理}
+\title{最终项目作业: 一维非线性方程的求根}
+
+
+\author{褚朱钇恒 \\ 信息与计算科学 3200104144}
+
+\begin{document}
+
+\maketitle
+\begin{abstract}
+     一维非线性方程$f(x)=0$不一定有精确的代数解，但可以求出数值解。本文主要介绍了二分法和牛顿法两种求解一维非线性方程方法，并比较两者在求解不同方程的收敛性和收敛速度。
+     
+\end{abstract}
+\section{引言}
+     求解一维非线性方程
+     \begin{equation}
+          f(x)=0;
+          \label{eq::1}
+     \end{equation}
+     即确定$x^*\in[a,b]$使$f(x^*)=0$，其中$f$是定义在[a,b]上的连续非线性函数，满足$f(x^*)=0$的$x^*$成为方程(\ref{eq::1})的根，也称为$f(x)$的零点。
+\section{数学理论}
+     \begin{theorem}{介值定理}
+          \label{the::intermediate}
+          如果$f(x)$在区间$[a,b]$上连续且$f(a)f(b)<0$，则至少存在一点$\eta\in[a,b]$使$f(\eta)=0$
+
+     \end{theorem}
+     \begin{theorem}{泰勒公式}
+          \label{the::taylor}
+          把$f(x)$在$x_0$点附近展开成Taylor级数，得到
+          $$f(x)=f(x_0)+(x-x_0)f^{'}(x_0)+(x-x_0)^2f^{''}(x_0)+\cdots$$
+     \end{theorem}
+\section{问题分析}
+     \subsection{二分法}
+     由定理\ref{the::intermediate}可以得出二分法求解一维非线性方程的想法，即每次将区间中点视为近似根，如果误差超过了要求，则考虑将原左右端点中与中点的$f$值异号的点作为新的端点，然后在子区间上继续迭代。
+
+     \subsection{Newton法}
+     由定理\ref{the::taylor}，取其线性部分则有$f(x_0)-f^{'}{x_0}(x-x_0)=0$，其解为$x_1=x_0-\frac{f(x_0)}{f^{'}(x_0)}$，故得到迭代序列$x_{n+1}=x_n-\frac{f(x_n)}{f^{'}(x_n)}$
+     
+\section{算法}
+     根据上一节的分析，我们不难得出二分法和Newton法的具体流程。
+\begin{figure}
+\centering
+\begin{tikzpicture}[node distance = 1.8cm, auto] 
+     \node [cloud] (init) {输入$f,a,b$};
+     \node [block, below of = init](D){$mid=\frac{a+b}{2}$};
+     \node [decision, below of = D](F){判断$f(a)f(mid)$是否$<0$};
+     \node [block, below of = F,yshift=-1cm](G){$b=mid$};
+     \node [block, left of = G](H){$a=mid$};
+     
+     \node [decision, below of = G](C){判别是否停止迭代};
+     \node [cloud, below of = C,yshift = -1cm](I){输出结果};
+     \node (tmp) [coordinate, right of =C,xshift=0.5cm]{};
+     \node (tmp2) [coordinate, right of =D,xshift=0.5cm]{};
+     \node (tmp3) [coordinate, left of =F,xshift=-0.5cm]{};
+                     
+     \path [line] (init) -- (D); 
+     \path [line] (D) -- (F); 
+     \draw [arrow] (F) -- node[anchor=east] {yes} (G);
+     \path [line] (G) -- (C); 
+     \draw [arrow] (C) -- node[anchor=east] {no} (I);
+     \path [line] (H) -- (C); 
+     
+     \draw [arrow] (C.east) --(tmp)-- node[anchor=east] {yes}(tmp2) -- (D.east);
+     \draw [arrow] (F.west) --(tmp3)-- node[anchor=east] {no} (H); 
+  
+     
+ \end{tikzpicture}
+ \begin{tikzpicture}[node distance = 1.8cm, auto] % the command node distance is important as it determines the space or the length of the arrow between different blocks.
+     \node [cloud] (init) {输入$f,f^{'},x_0$};
+     \node [block, below of = init](J){$n=1$};
+     \node [block, below of = J](D){$x_{n}=x_{n-1}-\frac{f(x_{n-1})}{f^{'}(x_{n-1})}$};
+
+     \node [block, below of = D,yshift=-1cm](G){$n=n+1$};
+     
+     \node [decision, below of = G](C){判别是否停止迭代};
+     \node [cloud, below of = C,yshift = -1cm](I){输出结果};
+     \node (tmp) [coordinate, right of =C,xshift=0.5cm]{};
+     \node (tmp2) [coordinate, right of =D,xshift=0.5cm]{};
+     \node (tmp3) [coordinate, left of =F,xshift=-0.5cm]{};
+                     
+     \path [line] (init) -- (J); 
+     \path [line] (J) -- (D); 
+     \path [line] (D) -- (G); 
+     \path [line] (G) -- (C); 
+     \draw [arrow] (C) -- node[anchor=east] {no} (I);
+     
+     \draw [arrow] (C.east) --(tmp)-- node[anchor=east] {yes}(tmp2) -- (D.east);
+
+     
+ \end{tikzpicture}
+ \caption{二分法和Newton法算法流程图}
+ \label{algo::1}
+\end{figure}
+\bibliography{quote}
+\end{document}
