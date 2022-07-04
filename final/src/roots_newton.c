@@ -37,7 +37,7 @@ main (int argc,char* argv[])
     s = gsl_root_fdfsolver_alloc (T);
     gsl_root_fdfsolver_set (s, &FDF, x);
 
-    if(argc>=2)
+    if(argc==2)
     {printf ("using %s method\n",
             gsl_root_fdfsolver_name (s));
 
@@ -51,7 +51,7 @@ main (int argc,char* argv[])
         x = gsl_root_fdfsolver_root (s);
         status = gsl_root_test_delta (x, x0, 0, eps);
 
-        if(argc>=2)
+        if(argc==2)
         {   if (status == GSL_SUCCESS)
           printf ("Converged:\n");
 
@@ -70,7 +70,7 @@ main (int argc,char* argv[])
     gsl_root_fdfsolver_free (s);
   }
   if(argc==1)
-  {printf("%d %lf\n",success,avg_time/success);
-  for(int i=1;i<=mx;i++)printf("%d %lf\n",i,sum[i]/success);}
+  for(int i=1;i<=mx;i++)printf("%d %lf\n",i,(sum[i]+T-success)/T);
+  if(argc==3)printf("%d %lf\n",success,avg_time/success);
   return 0;
 }

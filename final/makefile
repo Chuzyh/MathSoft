@@ -32,3 +32,9 @@ example: test
 	cd bin && ./dmk>../data/equation.in
 	cd bin && ./roots_newton -t<../data/example
 	cd bin && ./roots_bisection -t<../data/example
+
+overview: make dmk ./bin/roots_newton ./bin/roots_bisection ./bin/dmk 
+	if [ ! -d "./data/" ];then mkdir ./data; fi
+	cd bin && ./dmk>../data/equation.in
+	cd bin && ./roots_newton -t -o<../data/equation.in
+	cd bin && ./roots_bisection -t -o<../data/equation.in

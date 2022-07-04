@@ -54,7 +54,7 @@ main (int argc,char* argv[])
     s = gsl_root_fsolver_alloc (T);
     gsl_root_fsolver_set (s, &F, x_lo, x_hi);
 
-    if(argc>=2)
+    if(argc==2)
     {printf ("using %s method\n",
           gsl_root_fsolver_name (s));
 
@@ -73,7 +73,7 @@ main (int argc,char* argv[])
                                        0, 0.001);
       progress[i][iter]=(x_lo+x_hi)/2;
       iter_time[i]=iter;
-      if(argc>=2)
+      if(argc==2)
       {
       if (status == GSL_SUCCESS)
         printf ("Converged:\n");
@@ -97,7 +97,8 @@ main (int argc,char* argv[])
 
   }
   if(argc==1)
-  {printf("%d %lf\n",success,avg_time/success);
-  for(int i=1;i<=mx;i++)printf("%d %lf\n",i,sum[i]/success);}
+  for(int i=1;i<=mx;i++)printf("%d %lf\n",i,(sum[i]+T-success)/T);
+
+  if(argc==3)printf("%d %lf\n",success,avg_time/success);
   return 0;
 }
