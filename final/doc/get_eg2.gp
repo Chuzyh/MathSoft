@@ -1,4 +1,4 @@
-set size 0.75,0.75
+set size 0.7,0.7
 set terminal latex
 set output "eg2.tex"
 set xlabel "迭代次数"
