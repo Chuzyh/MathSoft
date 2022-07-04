@@ -42,11 +42,11 @@ text width=4.5em, text centered, rounded corners, node distance= 3cm, minimum he
 \section{引言}
      求解一维非线性方程
      \begin{equation}
-          f(x)=0;
+          f(x)=0
           \label{eq::1}
      \end{equation}
      即确定$x^*\in[a,b]$使$f(x^*)=0$，其中$f$是定义在[a,b]上的连续非线性函数，满足$f(x^*)=0$的$x^*$成为方程(\ref{eq::1})的根，也称为$f(x)$的零点。
-\section{数学理论}
+\section{数学理论\cite{mathematical_analysis}}
      \begin{theorem}{介值定理}
           \label{the::intermediate}
           如果$f(x)$在区间$[a,b]$上连续且$f(a)f(b)<0$，则至少存在一点$\eta\in[a,b]$使$f(\eta)=0$
@@ -57,6 +57,7 @@ text width=4.5em, text centered, rounded corners, node distance= 3cm, minimum he
           把$f(x)$在$x_0$点附近展开成Taylor级数，得到
           $$f(x)=f(x_0)+(x-x_0)f^{'}(x_0)+(x-x_0)^2f^{''}(x_0)+\cdots$$
      \end{theorem}
+     
 \section{问题分析}
      \subsection{二分法}
      由定理\ref{the::intermediate}可以得出二分法求解一维非线性方程的想法，即每次将区间中点视为近似根，如果误差超过了要求，则考虑将原左右端点中与中点的$f$值异号的点作为新的端点，然后在子区间上继续迭代。

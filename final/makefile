@@ -21,7 +21,7 @@ report:make dmk test ./doc/report.tex  ./doc/quote.bib
 
 test: make dmk ./bin/roots_newton ./bin/roots_bisection ./bin/dmk 
 	if [ ! -d "./data/" ];then mkdir ./data; fi
-	cd bin && ./dmk>../data/equation.in
+	cd bin && ./dmk>../data/equation.in 
 	cd bin && ./roots_newton<../data/equation.in>data1
 	cd bin && ./roots_bisection<../data/equation.in>data2
 	
@@ -38,3 +38,15 @@ overview: make dmk ./bin/roots_newton ./bin/roots_bisection ./bin/dmk
 	cd bin && ./dmk>../data/equation.in
 	cd bin && ./roots_newton -t -o<../data/equation.in
 	cd bin && ./roots_bisection -t -o<../data/equation.in
+
+slide:make dmk test ./doc/slide.tex ./doc/Tsinghua.sty ./doc/quote.bib
+	cp ./doc/slide.tex ./doc/Tsinghua.sty ./doc/quote.bib ./doc/get_eg2.gp ./
+	cp ./data/data1 ./data/data2 ./
+	gnuplot get_eg2.gp
+	xelatex slide
+	bibtex slide
+	xelatex slide
+	xelatex slide
+	mv slide.pdf ./doc
+	rm data1 data2
+	rm slide.* quote.bib get_eg2.gp eg2.tex *.sty
